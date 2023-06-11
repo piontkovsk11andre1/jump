@@ -88,37 +88,11 @@ services:
       - ./.env
       - ./infrastructure/development/environment/npm-start-api-v1.env
     environment:
-      - "PROBE_UPDATES=@app/drivers @app/handlers @app/jobs"
+      - "PROBE_UPDATES=@app/drivers @app/jobs"
     expose:
       - 80
     volumes:
       - "./packages/api-v1:/workdir"
-    networks:
-      - dev_machine_network
-    healthcheck:
-      test: wget -q --spider http://localhost:8080/health >/dev/null || exit 1
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
-    depends_on:
-      verdaccio:
-        condition: service_healthy
-  # Handlers container (Node.js):
-  handlers:
-    build: ./infrastructure/development/containers/npm-start
-    env_file:
-      - ./.env
-      - ./infrastructure/development/environment/npm-start-handlers.env
-    environment:
-      - "PROBE_UPDATES=@app/drivers @app/events @app/jobs"
-    volumes:
-      - "./packages/handlers:/workdir"
     networks:
       - dev_machine_network
     healthcheck:
