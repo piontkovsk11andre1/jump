@@ -1,0 +1,16 @@
+providers:
+  consulCatalog:
+    endpoint:
+      address: "http://consul:8500"
+  file:
+    filename: /etc/traefik/dynamic_conf.yml
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+api:
+  insecure: true
+  dashboard: true

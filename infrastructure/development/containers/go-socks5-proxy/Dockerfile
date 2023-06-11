@@ -1,0 +1,1 @@
+FROM serjs/go-socks5-proxy:latest
