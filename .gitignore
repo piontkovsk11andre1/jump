@@ -1,0 +1,6 @@
+# dotenv environment variables file
+.env
+.env.test
+infrastructure/development/configuration/traefik/local.cert
+infrastructure/development/configuration/traefik/local.key
+**/node_modules/*

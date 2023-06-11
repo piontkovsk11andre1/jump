@@ -1,0 +1,10 @@
+{
+    "name": "@app/drivers",
+    "version": "0.1.28",
+    "description": "Database/services connections package for client and server",
+    "module": "true",
+    "dependencies": {
+        "@elastic/elasticsearch": "^8.6.0",
+        "clickhouse": "^2.6.0"
+    }
+}

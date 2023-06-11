@@ -1,0 +1,1 @@
+FROM gliderlabs/registrator:latest

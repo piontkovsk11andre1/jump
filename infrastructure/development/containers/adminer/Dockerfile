@@ -1,0 +1,1 @@
+FROM michalhosna/adminer:latest

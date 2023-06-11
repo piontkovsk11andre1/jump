@@ -1,0 +1,19 @@
+remote_write:
+  - url: http://mimir:9009/api/v1/push
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# Development environment exporter server's list:
+scrape_configs:
+  # Prometheus itself:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+  # Services defined services:
+  - job_name: "consul-services"
+    consul_sd_configs:
+      - server: "consul:8500"
+        services:
+          - "prometheus-metrics"

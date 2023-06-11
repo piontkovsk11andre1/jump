@@ -1,0 +1,39 @@
+storage: /verdaccio/storage
+
+auth:
+  auth-memory:
+    users:
+      local-admin:
+        name: local-admin
+        password: root
+
+security:
+  api:
+    jwt:
+      sign:
+        expiresIn: 60d
+        notBefore: 1
+  web:
+    sign:
+      expiresIn: 7d
+
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+
+packages:
+  '@app/*':
+    access: $all
+    publish: $all
+
+  '**':
+    access: $all
+    publish: $all
+    proxy: npmjs
+
+middlewares:
+  audit:
+    enabled: true
+
+log:
+  - { type: stdout, format: pretty, level: trace }

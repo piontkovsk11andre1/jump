@@ -1,0 +1,1 @@
+export {default as newsList, testList} from "./news/list.mjs"
