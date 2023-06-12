@@ -793,7 +793,7 @@ services:
     networks:
       - dev_machine_network
     ports:
-      - "${PROXY_PORT}:1080"
+      - "127.0.0.1:${PROXY_PORT}:1080"
     external_links:
       - traefik:application.jump
       - traefik:api.application.jump
