@@ -11,6 +11,9 @@ entryPoints:
   websecure:
     address: ":443"
 
+ping:
+  entryPoint: "web"
+
 api:
   insecure: true
   dashboard: true
