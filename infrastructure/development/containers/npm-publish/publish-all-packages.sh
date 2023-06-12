@@ -3,9 +3,6 @@
 # Indicate that monitoring server is up
 HEALTH_CHECK_SERVER=0
 
-# Ping registry before authorization
-npm ping --registry http://verdaccio:4873/ || exit 1
-
 # NPM user credentials
 USERNAME=local-admin
 PASSWORD=root
@@ -18,8 +15,19 @@ expect {
   "Username:" {send "$USERNAME\r"; exp_continue}
   "Password:" {send "$PASSWORD\r"; exp_continue}
   "Email: (this IS public)" {send "$EMAIL\r"; exp_continue}
+  eof
 }
 EOD
+
+# Check if npm is authorized
+AUTHORIZED_USER=$(npm whoami --registry http://verdaccio:4873/ 2>/dev/null)
+
+if [ -n "$AUTHORIZED_USER" ]; then
+  echo "npm is authorized for user: $AUTHORIZED_USER"
+else
+  echo "npm is not authorized"
+  exit 1
+fi
 
 # Publish initial (current) version to the local repo
 while true; do
