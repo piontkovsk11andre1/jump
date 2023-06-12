@@ -2,6 +2,9 @@
 
 REGISTRY_URL=http://verdaccio:4873/
 
+# Ping registry before start
+npm ping --registry http://verdaccio:4873/ || exit 1
+
 # Current entrypoint script args
 NPM_START_ARGS=$@
 

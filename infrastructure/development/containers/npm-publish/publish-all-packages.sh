@@ -3,12 +3,15 @@
 # Indicate that monitoring server is up
 HEALTH_CHECK_SERVER=0
 
+# Ping registry before authorization
+npm ping --registry http://verdaccio:4873/ || exit 1
+
 # NPM user credentials
 USERNAME=local-admin
 PASSWORD=root
 EMAIL=admin@local.npm
 
-# Authorize local repository account
+# Authorize local repository account (or exit)
 /usr/bin/expect <<EOD
 spawn npm adduser --registry http://verdaccio:4873/
 expect {

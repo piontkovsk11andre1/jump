@@ -2,6 +2,9 @@
 
 REGISTRY_URL=http://verdaccio:4873/
 
+# Ping registry before build
+npm ping --registry http://verdaccio:4873/ || exit 1
+
 # Install packages using the local registry
 npm install --registry $REGISTRY_URL
 npm audit fix --registry $REGISTRY_URL
