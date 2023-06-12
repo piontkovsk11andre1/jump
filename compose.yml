@@ -14,20 +14,18 @@ services:
       - ./packages:/packages
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:8080/health >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      verdaccio:
-        condition: service_healthy
   # Client live-server (React):
   client:
     build: ./infrastructure/development/containers/npm-start
@@ -43,20 +41,18 @@ services:
       - "./packages/client:/workdir"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:80/ >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      verdaccio:
-        condition: service_healthy
   # Client build (React):
   client-build:
     build: ./infrastructure/development/containers/npm-build
@@ -67,20 +63,18 @@ services:
       - "./packages/client:/workdir"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:8080/health >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 1m30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      npm-publish:
-        condition: service_healthy
   # WebAPI container (Express.js):
   api-v1:
     build: ./infrastructure/development/containers/npm-start
@@ -95,20 +89,18 @@ services:
       - "./packages/api-v1:/workdir"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:8080/health >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      verdaccio:
-        condition: service_healthy
   # Jobs container (Node.js):
   jobs:
     build: ./infrastructure/development/containers/npm-start
@@ -121,20 +113,18 @@ services:
       - "./packages/jobs:/workdir"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:8080/health >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      verdaccio:
-        condition: service_healthy
   # Login container (Express.js + Passport.js):
   login:
     build: ./infrastructure/development/containers/npm-start
@@ -147,20 +137,18 @@ services:
       - "./packages/login:/workdir"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:8080/health >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      verdaccio:
-        condition: service_healthy
   # Views container (Express.js):
   views:
     build: ./infrastructure/development/containers/npm-start
@@ -173,20 +161,18 @@ services:
       - "./packages/views:/workdir"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:8080/health >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      verdaccio:
-        condition: service_healthy
   # Ingress reverse proxy (Traefik):
   traefik:
     build: ./infrastructure/development/containers/traefik
@@ -200,20 +186,18 @@ services:
       - "./infrastructure/development/configuration/traefik/traefik.yml:/etc/traefik/traefik.yml"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: traefik ping --healthcheck >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      consul:
-        condition: service_healthy
   # NPM repository (Verdaccio):
   verdaccio:
     build: ./infrastructure/development/containers/verdaccio
@@ -224,12 +208,13 @@ services:
       - "./infrastructure/development/configuration/verdaccio/config.yaml:/verdaccio/conf/config.yaml"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:4873/-/ping >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -245,12 +230,13 @@ services:
       - "postgres-data:/var/lib/postgresql/data"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: pg_isready -U postgres_user -d application >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -264,20 +250,18 @@ services:
       - ./infrastructure/development/environment/postgres-metrics.env
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:9187/ >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      postgres:
-        condition: service_healthy
   # OLAP database (ClickHouse):
   clickhouse:
     build: ./infrastructure/development/containers/clickhouse
@@ -288,12 +272,13 @@ services:
       - "clickhouse-data:/var/lib/clickhouse"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:8123/ping >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -309,12 +294,13 @@ services:
       - "rabbitmq-data:/var/lib/rabbitmq"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: rabbitmq-diagnostics check_port_connectivity >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 1m
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -328,14 +314,12 @@ services:
       - ./infrastructure/development/environment/rabbitmq-metrics.env
     networks:
       - dev_machine_network
+    restart: always
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
   # Document-oriented database (Mongo):
   mongo:
     build: ./infrastructure/development/containers/mongo
@@ -346,12 +330,13 @@ services:
       - "mongo-data:/data/db"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: mongosh --eval "db.adminCommand('ping')" || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -366,20 +351,18 @@ services:
     command: ["--mongodb.uri=mongodb://mongo:17001"]
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:9216/ >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      mongo:
-        condition: service_healthy
   # Object storage engine (Minio):
   minio:
     build: ./infrastructure/development/containers/minio
@@ -390,12 +373,13 @@ services:
       - "minio-data:/data"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: curl --silent --fail http://localhost:9001/ >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -411,12 +395,13 @@ services:
       - "redis-data:/data"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: redis-cli ping >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -430,20 +415,18 @@ services:
       - ./infrastructure/development/environment/redis-metrics.env
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:9121/ >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      redis:
-        condition: service_healthy
   # SQL administration interface (Adminer):
   adminer:
     build: ./infrastructure/development/containers/adminer
@@ -452,20 +435,18 @@ services:
       - ./infrastructure/development/environment/adminer.env
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:8080/ >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      postgres:
-        condition: service_healthy
   # Mongo administration interface (Mongo Express):
   mongo-express:
     build: ./infrastructure/development/containers/mongo-express
@@ -474,20 +455,18 @@ services:
       - ./infrastructure/development/environment/mongo-express.env
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:8081/ >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      mongo:
-        condition: service_healthy
   # Search engine (OpenSearch):
   opensearch:
     build: ./infrastructure/development/containers/opensearch
@@ -498,12 +477,13 @@ services:
       - opensearch-data:/usr/share/opensearch/data
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: curl --silent --fail https://localhost:9200 -ku 'admin:admin' >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -524,20 +504,18 @@ services:
       - ./infrastructure/development/environment/opensearch-dashboards.env
     networks:
       - dev_machine_network
+    restart: always
     #healthcheck:
     #  test: wget -q --spider http://localhost:3000/api/health >/dev/null || exit 1
     #  interval: 10s
     #  timeout: 5s
     #  retries: 3
-    #  start_period: 30s
+    #  start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      opensearch:
-        condition: service_healthy
   # Business intelligence tool (Metabase):
   metabase:
     build: ./infrastructure/development/containers/metabase
@@ -546,22 +524,18 @@ services:
       - ./infrastructure/development/environment/metabase.env
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
-      test: wget -q --spider http://localhost:3000/api/health >/dev/null || exit 1
+      test: curl --silent --fail http://localhost:3000/api/health >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      mongo:
-        condition: service_healthy
-      clickhouse:
-        condition: service_healthy
   # Time-series and realtime data visualization tool (Grafana):
   grafana:
     build: ./infrastructure/development/containers/grafana
@@ -570,12 +544,13 @@ services:
       - ./infrastructure/development/environment/grafana.env
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:3000/api/health >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -592,12 +567,13 @@ services:
       - "loki-data:/loki"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:3100/ready >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -613,28 +589,18 @@ services:
       - "./infrastructure/development/configuration/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:9090/-/healthy >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      mimir:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-      mongo-metrics:
-        condition: service_healthy
-      postgres-metrics:
-        condition: service_healthy
-      rabbitmq-metrics:
-        condition: service_healthy
   # Metrics backend (Mimir):
   mimir:
     build: ./infrastructure/development/containers/mimir
@@ -646,12 +612,13 @@ services:
       - "./infrastructure/development/configuration/mimir/mimir.yaml:/etc/mimir.yaml"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:9009/ready >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -667,12 +634,13 @@ services:
       - "./infrastructure/development/configuration/tempo/tempo.yaml:/etc/tempo/tempo.yaml"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:9411/ready >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -688,12 +656,13 @@ services:
       - "./packages:/packages:ro"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:80/ >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -709,12 +678,13 @@ services:
       - ".:/application"
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:80/ >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -728,12 +698,13 @@ services:
       - ./infrastructure/development/environment/consul.env
     networks:
       - dev_machine_network
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:8500/ >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -765,9 +736,6 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      consul:
-        condition: service_healthy
   # Sensitive data storage (Vault):
   vault:
     build: ./infrastructure/development/containers/vault
@@ -779,12 +747,13 @@ services:
     volumes:
       - "./infrastructure/development/configuration/vault/config.yml:/vault/config/config.yml"
       - "vault-data:/vault/file"
+    restart: always
     healthcheck:
       test: wget -q --spider http://localhost:8200/v1/sys/health >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 5m
     logging:
       driver: "json-file"
       options:
@@ -806,9 +775,6 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
-    depends_on:
-      consul:
-        condition: service_healthy
   # Log collection service (Promtail): 
   promtail:
     build: ./infrastructure/development/containers/promtail
@@ -821,9 +787,6 @@ services:
     volumes:
       - "./infrastructure/development/configuration/promtail/config.yml:/etc/promtail/config.yml"
       - "/var/run/docker.sock:/var/run/docker.sock"
-    depends_on:
-      loki:
-        condition: service_healthy
   # Developer's machine SOCKS proxy:
   socks-proxy:
     build: ./infrastructure/development/containers/go-socks5-proxy
