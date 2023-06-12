@@ -804,10 +804,10 @@ services:
       - traefik:client-build.application.jump
       - traefik:traefik.application.jump
       - traefik:verdaccio.application.jump
-      - traefik:events-viewer.application.jump
+      - traefik:wiring.application.jump
       - traefik:agendash.application.jump
       - traefik:clickhouse.application.jump
-      - traefik:rabbitmq.application.jump
+      - traefik:rabbitmq-management.application.jump
       - traefik:minio.application.jump
       - traefik:adminer.application.jump
       - traefik:mongo-express.application.jump
