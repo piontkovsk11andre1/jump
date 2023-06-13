@@ -1,5 +1,6 @@
 providers:
   consulCatalog:
+    exposedByDefault: false
     endpoint:
       address: "http://consul:8500"
   file:
