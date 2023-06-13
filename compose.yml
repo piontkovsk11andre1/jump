@@ -768,6 +768,7 @@ services:
     command: ["-internal", "consul://consul:8500"]
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock"
+    restart: always
     networks:
       - dev_machine_network
     logging:
@@ -796,28 +797,26 @@ services:
       - "127.0.0.1:${PROXY_PORT}:1080"
     external_links:
       - traefik:application.jump
+      - traefik:adminer.application.jump
+      - traefik:agendash.application.jump
       - traefik:api.application.jump
-      - traefik:login.application.jump
-      - traefik:views.application.jump
-      - traefik:events.application.jump
+      - traefik:clickhouse.application.jump
       - traefik:client.application.jump
-      - traefik:client-build.application.jump
+      - traefik:consul.application.jump
+      - traefik:grafana.application.jump
+      - traefik:login.application.jump
+      - traefik:metabase.application.jump
+      - traefik:mongo-express.application.jump
+      - traefik:minio.application.jump
+      - traefik:opensearch-dashboards.application.jump
+      - traefik:rabbitmq-management.application.jump
+      - traefik:swagger.application.jump
       - traefik:traefik.application.jump
       - traefik:verdaccio.application.jump
-      - traefik:wiring.application.jump
-      - traefik:agendash.application.jump
-      - traefik:clickhouse.application.jump
-      - traefik:rabbitmq-management.application.jump
-      - traefik:minio.application.jump
-      - traefik:adminer.application.jump
-      - traefik:mongo-express.application.jump
-      - traefik:metabase.application.jump
-      - traefik:opensearch-dashboards.application.jump
-      - traefik:grafana.application.jump
-      - traefik:swagger.application.jump
-      - traefik:xterm.application.jump
-      - traefik:consul.application.jump
+      - traefik:views.application.jump
       - traefik:vault.application.jump
+      - traefik:wiring.application.jump
+      - traefik:xterm.application.jump
 
 # Data and configuration directories:
 volumes:
