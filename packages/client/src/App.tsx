@@ -16,7 +16,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn how to jump
+          Learn how to vngn
   
         </a>
       </header>
