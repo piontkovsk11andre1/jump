@@ -796,27 +796,27 @@ services:
     ports:
       - "127.0.0.1:${PROXY_PORT}:1080"
     external_links:
-      - traefik:application.jump
-      - traefik:adminer.application.jump
-      - traefik:agendash.application.jump
-      - traefik:api.application.jump
-      - traefik:clickhouse.application.jump
-      - traefik:client.application.jump
-      - traefik:consul.application.jump
-      - traefik:grafana.application.jump
-      - traefik:login.application.jump
-      - traefik:metabase.application.jump
-      - traefik:mongo-express.application.jump
-      - traefik:minio.application.jump
-      - traefik:opensearch-dashboards.application.jump
-      - traefik:rabbitmq-management.application.jump
-      - traefik:swagger.application.jump
-      - traefik:traefik.application.jump
-      - traefik:verdaccio.application.jump
-      - traefik:views.application.jump
-      - traefik:vault.application.jump
-      - traefik:wiring.application.jump
-      - traefik:xterm.application.jump
+      - traefik:application.vngn
+      - traefik:adminer.application.vngn
+      - traefik:agendash.application.vngn
+      - traefik:api.application.vngn
+      - traefik:clickhouse.application.vngn
+      - traefik:client.application.vngn
+      - traefik:consul.application.vngn
+      - traefik:grafana.application.vngn
+      - traefik:login.application.vngn
+      - traefik:metabase.application.vngn
+      - traefik:mongo-express.application.vngn
+      - traefik:minio.application.vngn
+      - traefik:opensearch-dashboards.application.vngn
+      - traefik:rabbitmq-management.application.vngn
+      - traefik:swagger.application.vngn
+      - traefik:traefik.application.vngn
+      - traefik:verdaccio.application.vngn
+      - traefik:views.application.vngn
+      - traefik:vault.application.vngn
+      - traefik:wiring.application.vngn
+      - traefik:xterm.application.vngn
 
 # Data and configuration directories:
 volumes:
